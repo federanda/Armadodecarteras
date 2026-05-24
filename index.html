@@ -3,328 +3,525 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cartera de Inversión</title>
+<title>Armador de Carteras — FR Asesoría Financiera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  :root {
-    --bg: #f5f4f0;
-    --surface: #ffffff;
-    --surface2: #f0eeea;
-    --border: rgba(0,0,0,0.1);
-    --border2: rgba(0,0,0,0.18);
-    --text: #1a1a18;
-    --text2: #6b6b67;
-    --text3: #a0a09c;
-    --accent: #1a3a6b;
-    --accent-light: #e8edf5;
-    --green: #1D9E75;
-    --green-light: #e1f5ee;
-    --red: #D85A30;
-    --red-light: #faece7;
-    --radius: 10px;
-    --radius-sm: 6px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #141412;
-      --surface: #1e1e1c;
-      --surface2: #272725;
-      --border: rgba(255,255,255,0.1);
-      --border2: rgba(255,255,255,0.18);
-      --text: #f0efe9;
-      --text2: #9a9a95;
-      --text3: #5a5a57;
-      --accent: #7baeed;
-      --accent-light: #1a2535;
-      --green: #3ecb99;
-      --green-light: #0d2a1e;
-      --red: #f07050;
-      --red-light: #2a150c;
-    }
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 15px; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+/* ── FR Asesoría Financiera — Armador de Carteras ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  header {
-    background: var(--surface);
-    border-bottom: 0.5px solid var(--border);
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    width: 34px; height: 34px;
-    background: var(--accent);
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    color: #fff;
-    font-size: 16px;
-  }
-  header h1 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    flex: 1;
-  }
-  .header-actions { display: flex; gap: 8px; }
-  .btn-header {
-    display: flex; align-items: center; gap: 6px;
-    background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    padding: 6px 12px;
-    font-size: 13px;
-    cursor: pointer;
-    color: var(--text2);
-    font-family: inherit;
-    transition: background 0.15s, color 0.15s;
-  }
-  .btn-header:hover { background: var(--surface2); color: var(--text); }
-  .btn-header.primary {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .btn-header.primary:hover { opacity: 0.88; }
+:root {
+  --bg:          #f2f2ef;
+  --surface:     #ffffff;
+  --surface2:    #f8f8f5;
+  --surface3:    #e2e2db;
+  --text:        #1a1a17;
+  --muted:       #52574f;
+  --muted2:      #8a8f87;
+  --accent:      #273326;
+  --secondary:   #7a6138;
+  --border:      #c8c8be;
+  --border2:     #b0b0a6;
+  --green:       #1e6b4a;
+  --green-light: #eaf4ef;
+  --red:         #7a3020;
+  --red-light:   #f5ece9;
+  --radius:      2px;
+  --jost:        'Jost', sans-serif;
+  --cormorant:   'Cormorant Garamond', serif;
+  --transition:  0.25s ease;
+}
 
-  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+html { font-size: 15px; scroll-behavior: smooth; }
 
-  .section {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .section-header {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 1.1rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .section-num {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    background: var(--accent-light);
-    color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600;
-    flex-shrink: 0;
-  }
-  .section-title { font-size: 14px; font-weight: 600; color: var(--text); }
+body {
+  font-family: var(--jost);
+  font-weight: 300;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
 
-  textarea {
-    width: 100%;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 0.8rem 1rem;
-    font-size: 14px;
-    font-family: inherit;
-    color: var(--text);
-    background: var(--surface2);
-    resize: vertical;
-    min-height: 90px;
-    line-height: 1.7;
-    transition: border-color 0.15s;
-  }
-  textarea:focus { outline: none; border-color: var(--accent); }
-  textarea::placeholder { color: var(--text3); }
+/* ── HEADER ─────────────────────────────────────── */
+header {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.logo-svg { width: 36px; height: 36px; }
+.header-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.brand-name {
+  font-family: var(--cormorant);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.brand-sub {
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.header-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+}
+.header-tool-name {
+  font-family: var(--jost);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.btn-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--jost);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+}
+.btn-header:hover { background: var(--surface3); color: var(--accent); }
+.btn-header.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.btn-header.primary:hover { opacity: 0.85; }
 
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .field-label { font-size: 12px; color: var(--text2); margin-bottom: 5px; }
+/* ── MAIN ───────────────────────────────────────── */
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 5rem;
+}
 
-  select, input[type="text"], input[type="number"] {
-    width: 100%;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 0 0.8rem;
-    height: 36px;
-    font-size: 14px;
-    font-family: inherit;
-    color: var(--text);
-    background: var(--surface2);
-    transition: border-color 0.15s;
-    -webkit-appearance: none;
-  }
-  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; padding-right: 28px; }
-  select:focus, input:focus { outline: none; border-color: var(--accent); }
+/* ── PAGE HEADING ───────────────────────────────── */
+.page-heading {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.page-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.page-title {
+  font-family: var(--cormorant);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: var(--accent);
+  line-height: 1.1;
+}
 
-  .metric-card {
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    padding: 0.8rem 1rem;
-  }
-  .metric-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .metric-input {
-    font-size: 20px; font-weight: 600;
-    background: transparent; border: none;
-    border-bottom: 0.5px solid var(--border2);
-    border-radius: 0; padding: 0; height: auto;
-    width: 100%; color: var(--text);
-  }
-  .metric-input:focus { outline: none; border-bottom-color: var(--accent); }
-  .metric-input::placeholder { color: var(--text3); font-weight: 400; font-size: 16px; }
+/* ── SECTION CARDS ──────────────────────────────── */
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.25rem;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--cormorant);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--secondary);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--cormorant);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--accent);
+}
 
-  .portfolio-layout {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 1.25rem;
-    align-items: start;
-  }
-  @media (max-width: 640px) {
-    .portfolio-layout { grid-template-columns: 1fr; }
-    .grid-2 { grid-template-columns: 1fr; }
-    .grid-3 { grid-template-columns: 1fr; }
-    header { padding: 0.8rem 1rem; }
-    main { padding: 1rem 0.75rem 4rem; }
-  }
+/* ── FORM ELEMENTS ──────────────────────────────── */
+textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  font-family: var(--jost);
+  font-weight: 300;
+  color: var(--text);
+  background: var(--surface2);
+  resize: vertical;
+  min-height: 95px;
+  line-height: 1.75;
+  transition: border-color var(--transition);
+}
+textarea:focus { outline: none; border-color: var(--accent); }
+textarea::placeholder { color: var(--muted2); }
 
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 480px; }
-  thead th {
-    font-size: 11px; font-weight: 600;
-    color: var(--text2);
-    text-align: left;
-    padding: 0 8px 8px;
-    border-bottom: 0.5px solid var(--border);
-    white-space: nowrap;
-    text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  thead th:last-child { text-align: center; }
-  tbody tr { border-bottom: 0.5px solid var(--border); }
-  tbody tr:last-child { border-bottom: none; }
-  tbody td { padding: 5px 8px; vertical-align: middle; }
-  tbody td input { height: 30px; font-size: 13px; padding: 0 8px; }
-  tbody td input[type="number"] { width: 70px; }
-  .ticker-input { text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em; }
-  .cell-select { font-size: 12px; height: 30px; padding: 0 24px 0 6px; }
+.field-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
 
-  .btn-remove {
-    background: transparent; border: none; cursor: pointer;
-    color: var(--text3);
-    display: flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px;
-    border-radius: var(--radius-sm);
-    transition: background 0.15s, color 0.15s;
-  }
-  .btn-remove:hover { background: var(--red-light); color: var(--red); }
+select, input[type="text"], input[type="number"] {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 0.85rem;
+  height: 38px;
+  font-size: 0.88rem;
+  font-family: var(--jost);
+  font-weight: 300;
+  color: var(--text);
+  background: var(--surface2);
+  transition: border-color var(--transition);
+  -webkit-appearance: none;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2352574f' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  padding-right: 28px;
+}
+select:focus, input:focus { outline: none; border-color: var(--accent); }
 
-  .btn-add {
-    display: flex; align-items: center; gap: 6px;
-    margin-top: 10px;
-    background: transparent;
-    border: 0.5px solid var(--border2);
-    border-radius: var(--radius-sm);
-    padding: 6px 14px;
-    font-size: 13px; cursor: pointer;
-    color: var(--text2); font-family: inherit;
-    transition: background 0.15s, color 0.15s;
-  }
-  .btn-add:hover { background: var(--surface2); color: var(--text); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
 
-  .total-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 10px; padding: 8px 14px;
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-  }
-  .total-label { color: var(--text2); }
-  .total-pct { font-weight: 700; font-size: 15px; color: var(--text); }
-  .total-pct.over { color: var(--red); }
-  .total-pct.exact { color: var(--green); }
+/* Metric cards */
+.metric-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+.metric-label {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 5px;
+}
+.metric-input {
+  font-family: var(--cormorant);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0;
+  height: auto;
+  width: 100%;
+  transition: border-color var(--transition);
+}
+.metric-input:focus { outline: none; border-bottom-color: var(--accent); }
+.metric-input::placeholder { color: var(--muted2); font-weight: 300; font-size: 1.2rem; font-family: var(--jost); }
 
-  .chart-card {
-    background: var(--surface2);
-    border-radius: var(--radius);
-    padding: 1rem;
-  }
-  .chart-title {
-    font-size: 11px; font-weight: 600;
-    color: var(--text2);
-    text-align: center;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 0.75rem;
-  }
-  .pie-wrap { position: relative; width: 100%; height: 190px; }
-  .legend-list { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-  .legend-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .legend-pct { font-weight: 600; color: var(--text); }
+/* ── PORTFOLIO TABLE ────────────────────────────── */
+.portfolio-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 1.5rem;
+  align-items: start;
+}
 
-  .agrupacion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 1.1rem; }
-  @media (max-width: 480px) { .agrupacion-grid { grid-template-columns: 1fr; } }
-  .grupo-card {
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    padding: 0.85rem 1rem;
-  }
-  .grupo-title {
-    font-size: 11px; font-weight: 600;
-    color: var(--text2);
-    margin-bottom: 10px;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .grupo-row {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px; color: var(--text);
-    padding: 4px 0;
-  }
-  .grupo-bar { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
-  .grupo-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
-  .grupo-pct { font-weight: 600; color: var(--text); min-width: 40px; text-align: right; }
-  .empty-state { font-size: 12px; color: var(--text3); padding: 4px 0; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 460px; }
 
-  .print-only { display: none; }
-  @media print {
-    header .header-actions { display: none; }
-    .print-only { display: block; }
-    body { background: white; }
-    .section { break-inside: avoid; }
-  }
+thead th {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+thead th:last-child { text-align: center; }
+
+tbody tr { border-bottom: 1px solid var(--border); }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface2); }
+tbody td { padding: 4px 6px; vertical-align: middle; }
+tbody td input { height: 32px; font-size: 0.82rem; padding: 0 8px; }
+tbody td input[type="number"] { width: 65px; }
+
+.ticker-input {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--accent) !important;
+}
+.cell-select {
+  font-size: 0.78rem;
+  height: 32px;
+  padding: 0 22px 0 7px;
+}
+
+.btn-remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: var(--radius);
+  transition: background var(--transition), color var(--transition);
+}
+.btn-remove:hover { background: var(--red-light); color: var(--red); }
+
+.btn-add {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 6px 14px;
+  font-size: 0.68rem;
+  font-family: var(--jost);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.btn-add:hover { background: var(--surface3); color: var(--accent); border-color: var(--accent); }
+
+.total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+}
+.total-label { color: var(--muted); letter-spacing: 0.06em; }
+.total-pct {
+  font-family: var(--cormorant);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.total-pct.over { color: var(--red); }
+.total-pct.exact { color: var(--green); }
+
+/* ── CHART ──────────────────────────────────────── */
+.chart-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1rem;
+}
+.chart-title {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.pie-wrap { position: relative; width: 100%; height: 185px; }
+.legend-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.legend-dot { width: 7px; height: 7px; border-radius: 1px; flex-shrink: 0; }
+.legend-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.legend-pct { font-weight: 500; color: var(--accent); }
+
+/* ── GROUPINGS ──────────────────────────────────── */
+.agrupacion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 1.25rem;
+}
+.grupo-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+.grupo-title {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.grupo-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--text);
+  padding: 3px 0;
+}
+.grupo-bar {
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  margin-bottom: 7px;
+  overflow: hidden;
+}
+.grupo-bar-fill { height: 100%; border-radius: 1px; transition: width 0.4s ease; }
+.grupo-pct {
+  font-family: var(--cormorant);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--accent);
+  min-width: 44px;
+  text-align: right;
+}
+.empty-state { font-size: 0.75rem; color: var(--muted2); padding: 4px 0; font-style: italic; }
+
+/* ── PRINT ──────────────────────────────────────── */
+.print-only { display: none; }
+@media print {
+  header .header-actions { display: none; }
+  .print-only { display: block; }
+  body { background: white; }
+  .section { break-inside: avoid; border: 1px solid #ccc; }
+  main { padding: 1rem; }
+}
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 700px) {
+  .portfolio-layout { grid-template-columns: 1fr; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .agrupacion-grid { grid-template-columns: 1fr; }
+  .header-inner { padding: 0 1.25rem; }
+  main { padding: 1.5rem 1.25rem 4rem; }
+  .section { padding: 1.25rem 1.25rem; }
+  .header-brand { display: none; }
+  .header-divider { display: none; }
+  .header-tool-name { display: none; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo"><i class="ti ti-chart-pie" aria-hidden="true"></i></div>
-  <h1>Armador de Carteras</h1>
-  <div class="header-actions">
-    <button class="btn-header" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> Imprimir / PDF</button>
-    <button class="btn-header" onclick="limpiarTodo()"><i class="ti ti-refresh" aria-hidden="true"></i> Limpiar</button>
+  <div class="header-inner">
+    <div class="header-logo">
+      <svg class="logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="60" height="60" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="8" y="44" font-family="Cormorant Garamond, serif" font-size="34" font-weight="500" fill="var(--accent)" letter-spacing="-1">FR</text>
+        <line x1="8" y1="50" x2="56" y2="50" stroke="var(--accent)" stroke-width="0.8" opacity="0.5"/>
+      </svg>
+      <div class="header-brand">
+        <span class="brand-name">Federico Randazzo</span>
+        <span class="brand-sub">Asesor Financiero · CNV</span>
+      </div>
+    </div>
+    <div class="header-divider"></div>
+    <span class="header-tool-name">Armador de Carteras</span>
+    <div class="header-actions">
+      <button class="btn-header" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> Imprimir / PDF</button>
+      <button class="btn-header" onclick="limpiarTodo()"><i class="ti ti-refresh" aria-hidden="true"></i> Limpiar</button>
+    </div>
   </div>
 </header>
 
 <main>
 
-  <!-- SECCIÓN 1: MACRO -->
+  <div class="page-heading">
+    <p class="page-eyebrow">Herramienta de gestión</p>
+    <h1 class="page-title">Armador de Carteras</h1>
+  </div>
+
+  <!-- 1: MACRO -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">1</div>
+      <span class="section-num">01</span>
       <span class="section-title">Contexto macroeconómico y panorama</span>
     </div>
     <textarea id="macro-text" placeholder="Describí la situación macro actual: inflación, tasas de interés, tipo de cambio, ciclo económico, oportunidades y riesgos relevantes para la cartera..."></textarea>
   </div>
 
-  <!-- SECCIÓN 2: PERFIL -->
+  <!-- 2: PERFIL -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">2</div>
+      <span class="section-num">02</span>
       <span class="section-title">Perfil del inversor y rendimientos estimados</span>
     </div>
     <div class="grid-2">
@@ -364,30 +561,30 @@
         </select>
       </div>
     </div>
-    <div class="grid-3" style="margin-top:12px;">
+    <div class="grid-3" style="margin-top:14px;">
       <div class="metric-card">
         <div class="metric-label">Retorno estimado anual</div>
         <input class="metric-input" type="text" id="retorno-est" placeholder="Ej: 18%" />
       </div>
       <div class="metric-card">
         <div class="metric-label">Volatilidad esperada</div>
-        <input class="metric-input" type="text" id="volatilidad-est" placeholder="Ej: Media" />
+        <input class="metric-input" type="text" id="volatilidad-est" placeholder="Media" />
       </div>
       <div class="metric-card">
         <div class="metric-label">Benchmark de referencia</div>
-        <input class="metric-input" type="text" id="benchmark" placeholder="Ej: S&amp;P 500" />
+        <input class="metric-input" type="text" id="benchmark" placeholder="S&amp;P 500" />
       </div>
     </div>
-    <div style="margin-top:12px;">
+    <div style="margin-top:14px;">
       <div class="field-label">Descripción del perfil</div>
-      <textarea id="perfil-text" style="min-height:70px; margin-top:6px;" placeholder="Describí el perfil: tolerancia al riesgo, necesidades de liquidez, restricciones, experiencia previa, situación patrimonial..."></textarea>
+      <textarea id="perfil-text" style="min-height:75px; margin-top:7px;" placeholder="Describí el perfil: tolerancia al riesgo, necesidades de liquidez, restricciones, experiencia previa, situación patrimonial..."></textarea>
     </div>
   </div>
 
-  <!-- SECCIÓN 3: CARTERA -->
+  <!-- 3: CARTERA -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">3</div>
+      <span class="section-num">03</span>
       <span class="section-title">Composición de la cartera</span>
     </div>
     <div class="portfolio-layout">
@@ -396,12 +593,12 @@
           <table>
             <thead>
               <tr>
-                <th style="width:85px;">Ticker</th>
+                <th style="width:82px;">Ticker</th>
                 <th>Descripción</th>
-                <th style="width:95px;">Sector</th>
-                <th style="width:72px;">Moneda</th>
-                <th style="width:62px;">% Peso</th>
-                <th style="width:34px;"></th>
+                <th style="width:90px;">Sector</th>
+                <th style="width:68px;">Moneda</th>
+                <th style="width:60px;">% Peso</th>
+                <th style="width:32px;"></th>
               </tr>
             </thead>
             <tbody id="portfolio-tbody"></tbody>
@@ -417,9 +614,9 @@
       </div>
       <div>
         <div class="chart-card">
-          <div class="chart-title">Distribución</div>
+          <div class="chart-title">Distribución de la cartera</div>
           <div class="pie-wrap">
-            <canvas id="pieChart" role="img" aria-label="Gráfico de distribución de cartera">Sin activos cargados.</canvas>
+            <canvas id="pieChart" role="img" aria-label="Gráfico de distribución de cartera"></canvas>
           </div>
           <div class="legend-list" id="pie-legend"></div>
         </div>
@@ -427,39 +624,38 @@
     </div>
     <div class="agrupacion-grid">
       <div class="grupo-card">
-        <div class="grupo-title"><i class="ti ti-building-bank" aria-hidden="true" style="font-size:13px;"></i> Por sector</div>
-        <div id="grupo-sector"><span class="empty-state">Sin datos</span></div>
+        <div class="grupo-title"><i class="ti ti-building-bank" aria-hidden="true" style="font-size:12px;"></i> Por sector</div>
+        <div id="grupo-sector"><span class="empty-state">Sin activos cargados</span></div>
       </div>
       <div class="grupo-card">
-        <div class="grupo-title"><i class="ti ti-currency-dollar" aria-hidden="true" style="font-size:13px;"></i> Por moneda</div>
-        <div id="grupo-moneda"><span class="empty-state">Sin datos</span></div>
+        <div class="grupo-title"><i class="ti ti-currency-dollar" aria-hidden="true" style="font-size:12px;"></i> Por moneda</div>
+        <div id="grupo-moneda"><span class="empty-state">Sin activos cargados</span></div>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 4: OBJETIVOS -->
+  <!-- 4: OBJETIVOS -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">4</div>
+      <span class="section-num">04</span>
       <span class="section-title">Objetivos y comentarios de la cartera</span>
     </div>
-    <textarea id="objetivos-text" style="min-height:110px;" placeholder="Explicá los objetivos de esta cartera: lógica de construcción, diversificación, cobertura de riesgos, expectativas de performance, condiciones de revisión y rebalanceo..."></textarea>
+    <textarea id="objetivos-text" style="min-height:115px;" placeholder="Explicá los objetivos de esta cartera: lógica de construcción, diversificación, cobertura de riesgos, expectativas de performance, condiciones de revisión y rebalanceo..."></textarea>
   </div>
 
 </main>
 
 <script>
-const COLORS = ['#1a3a6b','#1D9E75','#D85A30','#7F77DD','#BA7517','#D4537E','#378ADD','#639922','#E24B4A','#0F6E56','#533489','#993C1D','#073b4c','#e9c46a'];
-const SECTORES = ['Acciones','Bonos','Commodities','REITs','Cripto','ETF','FCI','Liquidez','Otro'];
-const MONEDAS = ['USD','ARS','EUR','BRL','GBP','CHF','JPY','Otra'];
+// Paleta derivada del branding FR — verdes, tierra, azul pizarra
+const COLORS = ['#273326','#7a6138','#1e6b4a','#4a5e6a','#9a7830','#3d5c3a','#6b4c2e','#2c4a52','#5e7845','#8c6040','#395548','#7a5545','#2e4438','#956c3a'];
 
-let rows = [];
-let rowId = 0;
-let pieChart = null;
+const SECTORES = ['Acciones','Bonos','Commodities','REITs','Cripto','ETF','FCI','Liquidez','Otro'];
+const MONEDAS  = ['USD','ARS','EUR','BRL','GBP','CHF','JPY','Otra'];
+
+let rows = [], rowId = 0, pieChart = null;
 
 function addRow(ticker='', desc='', sector='', moneda='USD', pct='') {
-  const id = rowId++;
-  rows.push({ id, ticker, desc, sector, moneda, pct });
+  rows.push({ id: rowId++, ticker, desc, sector, moneda, pct });
   renderTable();
 }
 
@@ -473,34 +669,40 @@ function updateRow(id, field, value) {
   if (r) { r[field] = value; updateCharts(); }
 }
 
+function escHtml(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function renderTable() {
   const tbody = document.getElementById('portfolio-tbody');
   tbody.innerHTML = '';
   rows.forEach(r => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="text" class="ticker-input" value="${r.ticker}" placeholder="AAPL" oninput="updateRow(${r.id},'ticker',this.value.toUpperCase())" /></td>
-      <td><input type="text" value="${escHtml(r.desc)}" placeholder="Descripción" oninput="updateRow(${r.id},'desc',this.value)" /></td>
+      <td><input type="text" class="ticker-input" value="${escHtml(r.ticker)}" placeholder="AAPL"
+          oninput="updateRow(${r.id},'ticker',this.value.toUpperCase())" /></td>
+      <td><input type="text" value="${escHtml(r.desc)}" placeholder="Descripción"
+          oninput="updateRow(${r.id},'desc',this.value)" /></td>
       <td>
         <select class="cell-select" onchange="updateRow(${r.id},'sector',this.value)">
           <option value="">—</option>
-          ${SECTORES.map(s=>`<option value="${s}"${r.sector===s?' selected':''}>${s}</option>`).join('')}
+          ${SECTORES.map(s=>`<option${r.sector===s?' selected':''}>${s}</option>`).join('')}
         </select>
       </td>
       <td>
         <select class="cell-select" onchange="updateRow(${r.id},'moneda',this.value)">
-          ${MONEDAS.map(m=>`<option value="${m}"${r.moneda===m?' selected':''}>${m}</option>`).join('')}
+          ${MONEDAS.map(m=>`<option${r.moneda===m?' selected':''}>${m}</option>`).join('')}
         </select>
       </td>
-      <td><input type="number" min="0" max="100" step="0.5" value="${r.pct}" placeholder="0" oninput="updateRow(${r.id},'pct',this.value)" style="width:62px;" /></td>
-      <td><button class="btn-remove" onclick="removeRow(${r.id})" title="Eliminar"><i class="ti ti-trash" aria-hidden="true" style="font-size:14px;"></i></button></td>
+      <td><input type="number" min="0" max="100" step="0.5" value="${escHtml(r.pct)}" placeholder="0"
+          oninput="updateRow(${r.id},'pct',this.value)" style="width:60px;" /></td>
+      <td><button class="btn-remove" onclick="removeRow(${r.id})" title="Eliminar">
+        <i class="ti ti-trash" style="font-size:13px;"></i></button></td>
     `;
     tbody.appendChild(tr);
   });
   updateCharts();
 }
-
-function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function getTotal() {
   return rows.reduce((s,r) => s + (parseFloat(r.pct)||0), 0);
@@ -508,18 +710,18 @@ function getTotal() {
 
 function updateCharts() {
   const total = getTotal();
-  const totalEl = document.getElementById('total-display');
-  totalEl.textContent = total.toFixed(1) + '%';
-  totalEl.className = 'total-pct' + (total > 100.05 ? ' over' : (Math.abs(total-100) < 0.1 ? ' exact' : ''));
+  const el = document.getElementById('total-display');
+  el.textContent = total.toFixed(1) + '%';
+  el.className = 'total-pct' + (total > 100.05 ? ' over' : Math.abs(total-100) < 0.1 ? ' exact' : '');
 
-  const validRows = rows.filter(r => r.ticker && parseFloat(r.pct) > 0);
-  const labels = validRows.map(r => r.ticker);
-  const data = validRows.map(r => parseFloat(r.pct)||0);
-  const colors = validRows.map((_,i) => COLORS[i % COLORS.length]);
+  const valid = rows.filter(r => r.ticker && parseFloat(r.pct) > 0);
+  const labels = valid.map(r => r.ticker);
+  const data   = valid.map(r => parseFloat(r.pct)||0);
+  const colors = valid.map((_,i) => COLORS[i % COLORS.length]);
 
   if (pieChart) { pieChart.destroy(); pieChart = null; }
 
-  if (validRows.length > 0) {
+  if (valid.length > 0) {
     const ctx = document.getElementById('pieChart').getContext('2d');
     pieChart = new Chart(ctx, {
       type: 'doughnut',
@@ -527,23 +729,25 @@ function updateCharts() {
         labels,
         datasets: [{
           data, backgroundColor: colors,
-          borderWidth: 2, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--surface').trim() || '#fff',
-          hoverOffset: 5
+          borderWidth: 3,
+          borderColor: '#ffffff',
+          hoverOffset: 4
         }]
       },
       options: {
         responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed.toFixed(1)}%` } }
+          tooltip: { callbacks: { label: c => ` ${c.label}: ${c.parsed.toFixed(1)}%` } }
         },
-        cutout: '56%'
+        cutout: '58%'
       }
     });
-    document.getElementById('pie-legend').innerHTML = validRows.map((r,i) => `
+
+    document.getElementById('pie-legend').innerHTML = valid.map((r,i) => `
       <div class="legend-item">
         <span class="legend-dot" style="background:${colors[i]}"></span>
-        <span class="legend-name">${r.ticker}${r.desc ? ' — '+escHtml(r.desc) : ''}</span>
+        <span class="legend-name">${escHtml(r.ticker)}${r.desc ? ' — ' + escHtml(r.desc) : ''}</span>
         <span class="legend-pct">${parseFloat(r.pct).toFixed(1)}%</span>
       </div>
     `).join('');
@@ -551,48 +755,41 @@ function updateCharts() {
     document.getElementById('pie-legend').innerHTML = '';
   }
 
-  updateGrupos(validRows);
+  updateGrupos(valid);
 }
 
-function updateGrupos(validRows) {
+function updateGrupos(valid) {
   const bySector = {}, byMoneda = {};
-  validRows.forEach(r => {
+  valid.forEach(r => {
     const s = r.sector || 'Sin clasificar';
     const m = r.moneda || 'N/D';
     const p = parseFloat(r.pct)||0;
     bySector[s] = (bySector[s]||0) + p;
-    byMoneda[m] = (byMoneda[m]||0) + p;
+    byMoneda[m]  = (byMoneda[m]||0)  + p;
   });
-  renderGrupo('grupo-sector', bySector, '#1a3a6b');
-  renderGrupo('grupo-moneda', byMoneda, '#1D9E75');
+  renderGrupo('grupo-sector', bySector, '#273326');
+  renderGrupo('grupo-moneda', byMoneda, '#7a6138');
 }
 
 function renderGrupo(elId, data, color) {
   const el = document.getElementById(elId);
-  const sorted = Object.entries(data).sort((a,b)=>b[1]-a[1]);
-  if (!sorted.length) { el.innerHTML = '<span class="empty-state">Sin datos</span>'; return; }
+  const sorted = Object.entries(data).sort((a,b) => b[1]-a[1]);
+  if (!sorted.length) { el.innerHTML = '<span class="empty-state">Sin activos cargados</span>'; return; }
   const max = sorted[0][1];
   el.innerHTML = sorted.map(([k,v]) => `
     <div class="grupo-row">
       <span>${escHtml(k)}</span>
       <span class="grupo-pct">${v.toFixed(1)}%</span>
     </div>
-    <div class="grupo-bar"><div class="grupo-bar-fill" style="width:${(v/max*100).toFixed(1)}%;background:${color};"></div></div>
+    <div class="grupo-bar"><div class="grupo-bar-fill" style="width:${(v/max*100).toFixed(1)}%;background:${color};opacity:0.75;"></div></div>
   `).join('');
 }
 
 function limpiarTodo() {
-  if (!confirm('¿Limpiar todos los datos?')) return;
-  document.getElementById('macro-text').value = '';
-  document.getElementById('cliente-nombre').value = '';
-  document.getElementById('perfil-riesgo').value = '';
-  document.getElementById('horizonte').value = '';
-  document.getElementById('objetivo-tipo').value = '';
-  document.getElementById('retorno-est').value = '';
-  document.getElementById('volatilidad-est').value = '';
-  document.getElementById('benchmark').value = '';
-  document.getElementById('perfil-text').value = '';
-  document.getElementById('objetivos-text').value = '';
+  if (!confirm('¿Limpiar todos los datos del formulario?')) return;
+  ['macro-text','cliente-nombre','perfil-riesgo','horizonte','objetivo-tipo',
+   'retorno-est','volatilidad-est','benchmark','perfil-text','objetivos-text']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
   rows = []; rowId = 0;
   renderTable();
 }
