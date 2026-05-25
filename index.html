@@ -456,12 +456,133 @@ tbody td input[type="number"] { width: 65px; }
 
 /* ── PRINT ──────────────────────────────────────── */
 .print-only { display: none; }
+.print-textarea {
+  display: none;
+  width: 100%;
+  font-size: 0.78rem;
+  font-family: var(--jost);
+  font-weight: 300;
+  color: #1a1a17;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f8f8f5;
+  border: 1px solid #c8c8be;
+  border-radius: 2px;
+  padding: 0.7rem 0.9rem;
+}
+
 @media print {
-  header .header-actions { display: none; }
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 12mm 14mm;
+  }
+
+  html { font-size: 11px; }
+
+  header .header-actions { display: none !important; }
+  .btn-add, .btn-remove { display: none !important; }
   .print-only { display: block; }
-  body { background: white; }
-  .section { break-inside: avoid; border: 1px solid #ccc; }
-  main { padding: 1rem; }
+
+  body {
+    background: white !important;
+    color: #1a1a17 !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .page-heading { margin-bottom: 8px; padding-bottom: 6px; }
+  .page-title { font-size: 1.8rem !important; }
+
+  /* Secciones compactas */
+  .section {
+    border: 1px solid #c8c8be !important;
+    border-radius: 2px !important;
+    padding: 0.7rem 0.9rem !important;
+    margin-bottom: 6px !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    background: white !important;
+  }
+
+  .section-header {
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .section-title { font-size: 1rem !important; }
+
+  /* Ocultar textareas reales, mostrar divs de print */
+  textarea { display: none !important; }
+  .print-textarea { display: block !important; }
+
+  /* Inputs y selects: mostrar como texto plano */
+  input[type="text"], input[type="number"], select {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    height: auto !important;
+    font-size: 0.82rem !important;
+  }
+
+  .metric-card {
+    background: #f8f8f5 !important;
+    border: 1px solid #c8c8be !important;
+    padding: 0.45rem 0.7rem !important;
+  }
+
+  .metric-input {
+    font-size: 1.1rem !important;
+  }
+
+  .grid-2 { gap: 8px !important; }
+  .grid-3 { gap: 8px !important; }
+
+  /* Cartera — tabla + gráfico lado a lado */
+  .portfolio-layout {
+    grid-template-columns: 1fr 180px !important;
+    gap: 8px !important;
+  }
+
+  .chart-card {
+    background: #f8f8f5 !important;
+    border: 1px solid #c8c8be !important;
+    padding: 0.6rem !important;
+  }
+
+  .pie-wrap { height: 140px !important; }
+
+  table { font-size: 0.75rem !important; min-width: unset !important; }
+  tbody td { padding: 2px 5px !important; }
+  thead th { padding: 0 5px 6px !important; }
+
+  .total-bar {
+    margin-top: 6px !important;
+    padding: 5px 10px !important;
+    background: #f8f8f5 !important;
+    border: 1px solid #c8c8be !important;
+  }
+
+  .agrupacion-grid {
+    margin-top: 6px !important;
+    gap: 6px !important;
+  }
+
+  .grupo-card {
+    background: #f8f8f5 !important;
+    border: 1px solid #c8c8be !important;
+    padding: 0.5rem 0.7rem !important;
+  }
+
+  .legend-list { margin-top: 6px !important; gap: 3px !important; }
+  .legend-item { font-size: 0.68rem !important; }
+
+  /* Salto de página: sección 3 (cartera) empieza en nueva hoja si no entra */
+  .section:nth-child(3) { page-break-before: auto; }
 }
 
 /* ── RESPONSIVE ─────────────────────────────────── */
@@ -516,6 +637,7 @@ tbody td input[type="number"] { width: 65px; }
       <span class="section-title">Contexto macroeconómico y panorama</span>
     </div>
     <textarea id="macro-text" placeholder="Describí la situación macro actual: inflación, tasas de interés, tipo de cambio, ciclo económico, oportunidades y riesgos relevantes para la cartera..."></textarea>
+    <div class="print-textarea" id="print-macro-text"></div>
   </div>
 
   <!-- 2: PERFIL -->
@@ -578,6 +700,7 @@ tbody td input[type="number"] { width: 65px; }
     <div style="margin-top:14px;">
       <div class="field-label">Descripción del perfil</div>
       <textarea id="perfil-text" style="min-height:75px; margin-top:7px;" placeholder="Describí el perfil: tolerancia al riesgo, necesidades de liquidez, restricciones, experiencia previa, situación patrimonial..."></textarea>
+      <div class="print-textarea" id="print-perfil-text" style="margin-top:7px;"></div>
     </div>
   </div>
 
@@ -641,6 +764,7 @@ tbody td input[type="number"] { width: 65px; }
       <span class="section-title">Objetivos y comentarios de la cartera</span>
     </div>
     <textarea id="objetivos-text" style="min-height:115px;" placeholder="Explicá los objetivos de esta cartera: lógica de construcción, diversificación, cobertura de riesgos, expectativas de performance, condiciones de revisión y rebalanceo..."></textarea>
+    <div class="print-textarea" id="print-objetivos-text"></div>
   </div>
 
 </main>
@@ -649,7 +773,7 @@ tbody td input[type="number"] { width: 65px; }
 // Paleta derivada del branding FR — verdes, tierra, azul pizarra
 const COLORS = ['#273326','#7a6138','#1e6b4a','#4a5e6a','#9a7830','#3d5c3a','#6b4c2e','#2c4a52','#5e7845','#8c6040','#395548','#7a5545','#2e4438','#956c3a'];
 
-const SECTORES = ['Acciones','Bonos','Commodities','REITs','Cripto','ETF','FCI','Liquidez','ON','Cedear']];
+const SECTORES = ['Acciones','Bonos','Commodities','REITs','Cripto','ETF','FCI','Liquidez','ON','Cedear'];
 const MONEDAS  = ['USD','ARS','EUR','BRL','GBP','CHF','JPY','Otra'];
 
 let rows = [], rowId = 0, pieChart = null;
@@ -795,6 +919,30 @@ function limpiarTodo() {
 }
 
 addRow();
+
+// ── Sincronizar textareas → divs de impresión ────
+const TEXTAREA_MAP = {
+  'macro-text':     'print-macro-text',
+  'perfil-text':    'print-perfil-text',
+  'objetivos-text': 'print-objetivos-text'
+};
+
+function syncPrintTextareas() {
+  Object.entries(TEXTAREA_MAP).forEach(([srcId, dstId]) => {
+    const src = document.getElementById(srcId);
+    const dst = document.getElementById(dstId);
+    if (src && dst) dst.textContent = src.value;
+  });
+}
+
+// Sincronizar en tiempo real mientras se escribe
+Object.keys(TEXTAREA_MAP).forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', syncPrintTextareas);
+});
+
+// Sincronizar justo antes de imprimir
+window.addEventListener('beforeprint', syncPrintTextareas);
 </script>
 </body>
 </html>
