@@ -277,12 +277,11 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 .metric-input:focus { outline: none; border-bottom-color: var(--accent); }
 .metric-input::placeholder { color: var(--muted2); font-weight: 300; font-size: 1.2rem; font-family: var(--jost); }
 
-/* ── PORTFOLIO TABLE ────────────────────────────── */
+/* ── PORTFOLIO LAYOUT — columna completa ────────── */
 .portfolio-layout {
-  display: grid;
-  grid-template-columns: 1fr 240px;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  align-items: start;
 }
 
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -375,12 +374,12 @@ tbody td input[type="number"] { width: 65px; }
 .total-pct.over { color: var(--red); }
 .total-pct.exact { color: var(--green); }
 
-/* ── CHART ──────────────────────────────────────── */
+/* ── CHART — ancho completo ─────────────────────── */
 .chart-card {
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.25rem 1rem;
+  padding: 1.5rem 1.5rem 1.25rem;
 }
 .chart-title {
   font-size: 0.6rem;
@@ -388,28 +387,32 @@ tbody td input[type="number"] { width: 65px; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--secondary);
-  text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
-.pie-wrap { position: relative; width: 100%; height: 185px; }
-.legend-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.chart-inner {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+.pie-wrap { position: relative; width: 100%; height: 220px; }
+.legend-list { display: flex; flex-direction: column; gap: 7px; }
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.75rem;
+  gap: 9px;
+  font-size: 0.8rem;
   color: var(--muted);
 }
-.legend-dot { width: 7px; height: 7px; border-radius: 1px; flex-shrink: 0; }
+.legend-dot { width: 8px; height: 8px; border-radius: 1px; flex-shrink: 0; }
 .legend-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.legend-pct { font-weight: 500; color: var(--accent); }
+.legend-pct { font-weight: 500; color: var(--accent); min-width: 38px; text-align: right; }
 
 /* ── GROUPINGS ──────────────────────────────────── */
 .agrupacion-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 1.25rem;
 }
 .grupo-card {
   background: var(--surface2);
@@ -472,22 +475,119 @@ tbody td input[type="number"] { width: 65px; }
   padding: 0.7rem 0.9rem;
 }
 
+/* ── PRINT HEADER & FOOTER ──────────────────────── */
+.print-page-header {
+  display: none;
+}
+.print-page-footer {
+  display: none;
+}
+
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 14mm 12mm 14mm;
+    margin: 14mm 14mm 16mm 14mm;
   }
 
   html { font-size: 11px; }
 
+  /* Ocultar header de navegación */
   header .header-actions { display: none !important; }
   .btn-add, .btn-remove { display: none !important; }
+
+  /* Mostrar elementos solo de impresión */
   .print-only { display: block; }
+
+  /* Header de impresión — logo izquierda, nombre derecha */
+  .print-page-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid #273326;
+    margin-bottom: 12px;
+  }
+  .print-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .print-header-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .print-header-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .print-brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #273326;
+    letter-spacing: 0.02em;
+  }
+  .print-brand-sub {
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #52574f;
+  }
+  .print-header-right {
+    text-align: right;
+  }
+  .print-header-fullname {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #273326;
+    letter-spacing: 0.03em;
+    display: block;
+  }
+  .print-header-role {
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #52574f;
+  }
+
+  /* Footer de impresión */
+  .print-page-footer {
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 18px;
+    margin-top: 10px;
+    padding-top: 7px;
+    border-top: 1px solid #c8c8be;
+    position: fixed;
+    bottom: 10mm;
+    left: 14mm;
+    right: 14mm;
+  }
+  .print-footer-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.6rem;
+    color: #52574f;
+    letter-spacing: 0.05em;
+  }
+  .print-footer-icon {
+    font-size: 0.65rem;
+    color: #7a6138;
+  }
 
   body {
     background: white !important;
     color: #1a1a17 !important;
   }
+
+  /* Ocultar header de navegación completamente */
+  header { display: none !important; }
 
   main {
     max-width: 100% !important;
@@ -542,19 +642,23 @@ tbody td input[type="number"] { width: 65px; }
   .grid-2 { gap: 8px !important; }
   .grid-3 { gap: 8px !important; }
 
-  /* Cartera — tabla + gráfico lado a lado */
+  /* Cartera — columna completa también en print */
   .portfolio-layout {
-    grid-template-columns: 1fr 180px !important;
-    gap: 8px !important;
+    flex-direction: column !important;
+    gap: 10px !important;
   }
 
+  /* Gráfico de torta en print — más compacto */
   .chart-card {
     background: #f8f8f5 !important;
     border: 1px solid #c8c8be !important;
-    padding: 0.6rem !important;
+    padding: 0.7rem 0.9rem !important;
   }
-
-  .pie-wrap { height: 140px !important; }
+  .chart-inner {
+    grid-template-columns: 180px 1fr !important;
+    gap: 1rem !important;
+  }
+  .pie-wrap { height: 160px !important; }
 
   table { font-size: 0.75rem !important; min-width: unset !important; }
   tbody td { padding: 2px 5px !important; }
@@ -568,7 +672,6 @@ tbody td input[type="number"] { width: 65px; }
   }
 
   .agrupacion-grid {
-    margin-top: 6px !important;
     gap: 6px !important;
   }
 
@@ -578,16 +681,14 @@ tbody td input[type="number"] { width: 65px; }
     padding: 0.5rem 0.7rem !important;
   }
 
-  .legend-list { margin-top: 6px !important; gap: 3px !important; }
-  .legend-item { font-size: 0.68rem !important; }
-
-  /* Salto de página: sección 3 (cartera) empieza en nueva hoja si no entra */
-  .section:nth-child(3) { page-break-before: auto; }
+  .legend-list { gap: 4px !important; }
+  .legend-item { font-size: 0.7rem !important; }
 }
 
 /* ── RESPONSIVE ─────────────────────────────────── */
 @media (max-width: 700px) {
-  .portfolio-layout { grid-template-columns: 1fr; }
+  .chart-inner { grid-template-columns: 1fr; }
+  .pie-wrap { height: 200px; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .agrupacion-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0 1.25rem; }
@@ -600,6 +701,37 @@ tbody td input[type="number"] { width: 65px; }
 </style>
 </head>
 <body>
+
+<!-- HEADER DE IMPRESIÓN (solo visible al imprimir) -->
+<div class="print-page-header">
+  <div class="print-header-left">
+    <svg class="print-header-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="60" height="60" rx="2" fill="none" stroke="#273326" stroke-width="1.5"/>
+      <text x="8" y="44" font-family="Cormorant Garamond, serif" font-size="34" font-weight="500" fill="#273326" letter-spacing="-1">FR</text>
+      <line x1="8" y1="50" x2="56" y2="50" stroke="#273326" stroke-width="0.8" opacity="0.5"/>
+    </svg>
+    <div class="print-header-brand">
+      <span class="print-brand-name">FR Asesoría Financiera</span>
+      <span class="print-brand-sub">Asesor Financiero · CNV</span>
+    </div>
+  </div>
+  <div class="print-header-right">
+    <span class="print-header-fullname">Federico Randazzo</span>
+    <span class="print-header-role">Asesor Financiero Independiente · CNV</span>
+  </div>
+</div>
+
+<!-- FOOTER DE IMPRESIÓN (solo visible al imprimir) -->
+<div class="print-page-footer">
+  <div class="print-footer-item">
+    <i class="ti ti-phone print-footer-icon"></i>
+    <span>+54 9 XXX XXX-XXXX</span>
+  </div>
+  <div class="print-footer-item">
+    <i class="ti ti-mail print-footer-icon"></i>
+    <span>federico@frasesoriafinanciera.com</span>
+  </div>
+</div>
 
 <header>
   <div class="header-inner">
@@ -710,7 +842,10 @@ tbody td input[type="number"] { width: 65px; }
       <span class="section-num">03</span>
       <span class="section-title">Composición de la cartera</span>
     </div>
+
     <div class="portfolio-layout">
+
+      <!-- 3a: Tabla de activos -->
       <div>
         <div class="table-wrap">
           <table>
@@ -718,9 +853,9 @@ tbody td input[type="number"] { width: 65px; }
               <tr>
                 <th style="width:82px;">Ticker</th>
                 <th>Descripción</th>
-                <th style="width:90px;">Sector</th>
-                <th style="width:68px;">Moneda</th>
-                <th style="width:60px;">% Peso</th>
+                <th style="width:105px;">Sector</th>
+                <th style="width:72px;">Moneda</th>
+                <th style="width:64px;">% Peso</th>
                 <th style="width:32px;"></th>
               </tr>
             </thead>
@@ -735,25 +870,30 @@ tbody td input[type="number"] { width: 65px; }
           <span class="total-pct" id="total-display">0.0%</span>
         </div>
       </div>
-      <div>
-        <div class="chart-card">
-          <div class="chart-title">Distribución de la cartera</div>
+
+      <!-- 3b: Gráfico de torta — ancho completo -->
+      <div class="chart-card">
+        <div class="chart-title">Distribución de la cartera</div>
+        <div class="chart-inner">
           <div class="pie-wrap">
             <canvas id="pieChart" role="img" aria-label="Gráfico de distribución de cartera"></canvas>
           </div>
           <div class="legend-list" id="pie-legend"></div>
         </div>
       </div>
-    </div>
-    <div class="agrupacion-grid">
-      <div class="grupo-card">
-        <div class="grupo-title"><i class="ti ti-building-bank" aria-hidden="true" style="font-size:12px;"></i> Por sector</div>
-        <div id="grupo-sector"><span class="empty-state">Sin activos cargados</span></div>
+
+      <!-- 3c: Agrupaciones -->
+      <div class="agrupacion-grid">
+        <div class="grupo-card">
+          <div class="grupo-title"><i class="ti ti-building-bank" aria-hidden="true" style="font-size:12px;"></i> Por sector</div>
+          <div id="grupo-sector"><span class="empty-state">Sin activos cargados</span></div>
+        </div>
+        <div class="grupo-card">
+          <div class="grupo-title"><i class="ti ti-currency-dollar" aria-hidden="true" style="font-size:12px;"></i> Por moneda</div>
+          <div id="grupo-moneda"><span class="empty-state">Sin activos cargados</span></div>
+        </div>
       </div>
-      <div class="grupo-card">
-        <div class="grupo-title"><i class="ti ti-currency-dollar" aria-hidden="true" style="font-size:12px;"></i> Por moneda</div>
-        <div id="grupo-moneda"><span class="empty-state">Sin activos cargados</span></div>
-      </div>
+
     </div>
   </div>
 
@@ -935,13 +1075,11 @@ function syncPrintTextareas() {
   });
 }
 
-// Sincronizar en tiempo real mientras se escribe
 Object.keys(TEXTAREA_MAP).forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', syncPrintTextareas);
 });
 
-// Sincronizar justo antes de imprimir
 window.addEventListener('beforeprint', syncPrintTextareas);
 </script>
 </body>
