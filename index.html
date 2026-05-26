@@ -395,7 +395,18 @@ tbody td input[type="number"] { width: 65px; }
   gap: 2rem;
   align-items: center;
 }
-.pie-wrap { position: relative; width: 100%; height: 220px; }
+/* FIX 1: Contenedor del canvas con overflow hidden para que el gráfico no se salga */
+.pie-wrap {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+.pie-wrap canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
 .legend-list { display: flex; flex-direction: column; gap: 7px; }
 .legend-item {
   display: flex;
@@ -486,19 +497,17 @@ tbody td input[type="number"] { width: 65px; }
 @media print {
   @page {
     size: A4 portrait;
-    margin: 14mm 14mm 16mm 14mm;
+    margin: 14mm 14mm 18mm 14mm;
   }
 
   html { font-size: 11px; }
 
-  /* Ocultar header de navegación */
   header .header-actions { display: none !important; }
   .btn-add, .btn-remove { display: none !important; }
 
-  /* Mostrar elementos solo de impresión */
   .print-only { display: block; }
 
-  /* Header de impresión — logo izquierda, nombre derecha */
+  /* Header de impresión */
   .print-page-header {
     display: flex !important;
     justify-content: space-between;
@@ -554,19 +563,17 @@ tbody td input[type="number"] { width: 65px; }
     color: #52574f;
   }
 
-  /* Footer de impresión */
+  /* FIX 3: Footer estático al final del contenido (no fixed) 
+     para evitar superposición con el texto de la última sección */
   .print-page-footer {
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
     gap: 18px;
-    margin-top: 10px;
+    margin-top: 18px;
     padding-top: 7px;
     border-top: 1px solid #c8c8be;
-    position: fixed;
-    bottom: 10mm;
-    left: 14mm;
-    right: 14mm;
+    /* Eliminado: position fixed que causaba la superposición */
   }
   .print-footer-item {
     display: flex;
@@ -586,7 +593,6 @@ tbody td input[type="number"] { width: 65px; }
     color: #1a1a17 !important;
   }
 
-  /* Ocultar header de navegación completamente */
   header { display: none !important; }
 
   main {
@@ -598,7 +604,6 @@ tbody td input[type="number"] { width: 65px; }
   .page-heading { margin-bottom: 8px; padding-bottom: 6px; }
   .page-title { font-size: 1.8rem !important; }
 
-  /* Secciones compactas */
   .section {
     border: 1px solid #c8c8be !important;
     border-radius: 2px !important;
@@ -616,11 +621,9 @@ tbody td input[type="number"] { width: 65px; }
 
   .section-title { font-size: 1rem !important; }
 
-  /* Ocultar textareas reales, mostrar divs de print */
   textarea { display: none !important; }
   .print-textarea { display: block !important; }
 
-  /* Inputs y selects: mostrar como texto plano */
   input[type="text"], input[type="number"], select {
     border: none !important;
     background: transparent !important;
@@ -642,23 +645,36 @@ tbody td input[type="number"] { width: 65px; }
   .grid-2 { gap: 8px !important; }
   .grid-3 { gap: 8px !important; }
 
-  /* Cartera — columna completa también en print */
   .portfolio-layout {
     flex-direction: column !important;
     gap: 10px !important;
   }
 
-  /* Gráfico de torta en print — más compacto */
+  /* FIX 1: Gráfico en print — canvas contenido dentro del recuadro */
   .chart-card {
     background: #f8f8f5 !important;
     border: 1px solid #c8c8be !important;
     padding: 0.7rem 0.9rem !important;
+    overflow: hidden !important;
   }
   .chart-inner {
-    grid-template-columns: 180px 1fr !important;
+    grid-template-columns: 160px 1fr !important;
     gap: 1rem !important;
+    align-items: center !important;
   }
-  .pie-wrap { height: 160px !important; }
+  .pie-wrap {
+    height: 160px !important;
+    width: 160px !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .pie-wrap canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 160px !important;
+    height: 160px !important;
+  }
 
   table { font-size: 0.75rem !important; min-width: unset !important; }
   tbody td { padding: 2px 5px !important; }
@@ -717,7 +733,6 @@ tbody td input[type="number"] { width: 65px; }
   </div>
   <div class="print-header-right">
     <span class="print-header-fullname">Federico Randazzo</span>
-    <span class="print-header-role">Asesor Financiero Independiente · CNV</span>
   </div>
 </div>
 
@@ -725,11 +740,11 @@ tbody td input[type="number"] { width: 65px; }
 <div class="print-page-footer">
   <div class="print-footer-item">
     <i class="ti ti-phone print-footer-icon"></i>
-    <span>+54 9 XXX XXX-XXXX</span>
+    <span>Tel: 2323579094</span>
   </div>
   <div class="print-footer-item">
     <i class="ti ti-mail print-footer-icon"></i>
-    <span>federico@frasesoriafinanciera.com</span>
+    <span>federandavet@gmail.com</span>
   </div>
 </div>
 
@@ -987,24 +1002,29 @@ function updateCharts() {
 
   if (valid.length > 0) {
     const ctx = document.getElementById('pieChart').getContext('2d');
+    // FIX 2: Usar type 'pie' en lugar de 'doughnut' para torta completa sin hueco
     pieChart = new Chart(ctx, {
-      type: 'doughnut',
+      type: 'pie',
       data: {
         labels,
         datasets: [{
           data, backgroundColor: colors,
-          borderWidth: 3,
+          borderWidth: 2,
           borderColor: '#ffffff',
           hoverOffset: 4
         }]
       },
       options: {
-        responsive: true, maintainAspectRatio: false,
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: 4
+        },
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: c => ` ${c.label}: ${c.parsed.toFixed(1)}%` } }
-        },
-        cutout: '58%'
+        }
+        // Sin cutout — torta sólida completa
       }
     });
 
