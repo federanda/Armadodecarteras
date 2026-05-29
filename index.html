@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
 <title>Armador de Carteras — FR Asesoría Financiera</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -123,6 +123,10 @@ header {
   border: 1px solid var(--border2);
   background: transparent;
   color: var(--muted);
+  /* Mejor área de toque en móvil */
+  min-height: 40px;
+  min-width: 40px;
+  touch-action: manipulation;
 }
 .btn-header:hover { background: var(--surface3); color: var(--accent); }
 .btn-header.primary {
@@ -225,7 +229,7 @@ select, input[type="text"], input[type="number"] {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0 0.85rem;
-  height: 38px;
+  height: 44px; /* más alto para mejor toque en móvil */
   font-size: 0.88rem;
   font-family: var(--jost);
   font-weight: 300;
@@ -233,6 +237,7 @@ select, input[type="text"], input[type="number"] {
   background: var(--surface2);
   transition: border-color var(--transition);
   -webkit-appearance: none;
+  touch-action: manipulation;
 }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2352574f' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
@@ -277,15 +282,39 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 .metric-input:focus { outline: none; border-bottom-color: var(--accent); }
 .metric-input::placeholder { color: var(--muted2); font-weight: 300; font-size: 1.2rem; font-family: var(--jost); }
 
-/* ── PORTFOLIO LAYOUT — columna completa ────────── */
+/* ── PORTFOLIO LAYOUT ───────────────────────────── */
 .portfolio-layout {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 460px; }
+/* ── TABLA: scroll horizontal en móvil ──────────── */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Indicador sutil de scroll disponible */
+  border-radius: var(--radius);
+}
+/* Hint visual de scroll en móvil */
+@media (max-width: 700px) {
+  .table-wrap {
+    position: relative;
+  }
+  .table-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 28px;
+    background: linear-gradient(to right, transparent, rgba(242,242,239,0.85));
+    pointer-events: none;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  /* Ocultar hint cuando se llega al final */
+  .table-wrap.scrolled-end::after { display: none; }
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; min-width: 480px; }
 
 thead th {
   font-size: 0.6rem;
@@ -304,7 +333,7 @@ tbody tr { border-bottom: 1px solid var(--border); }
 tbody tr:last-child { border-bottom: none; }
 tbody tr:hover { background: var(--surface2); }
 tbody td { padding: 4px 6px; vertical-align: middle; }
-tbody td input { height: 32px; font-size: 0.82rem; padding: 0 8px; }
+tbody td input { height: 38px; font-size: 0.82rem; padding: 0 8px; }
 tbody td input[type="number"] { width: 65px; }
 
 .ticker-input {
@@ -315,7 +344,7 @@ tbody td input[type="number"] { width: 65px; }
 }
 .cell-select {
   font-size: 0.78rem;
-  height: 32px;
+  height: 38px;
   padding: 0 22px 0 7px;
 }
 
@@ -327,9 +356,10 @@ tbody td input[type="number"] { width: 65px; }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px; height: 28px;
+  width: 36px; height: 36px; /* más grande para toque */
   border-radius: var(--radius);
   transition: background var(--transition), color var(--transition);
+  touch-action: manipulation;
 }
 .btn-remove:hover { background: var(--red-light); color: var(--red); }
 
@@ -341,7 +371,7 @@ tbody td input[type="number"] { width: 65px; }
   background: transparent;
   border: 1px solid var(--border2);
   border-radius: var(--radius);
-  padding: 6px 14px;
+  padding: 8px 14px; /* más alto para toque */
   font-size: 0.68rem;
   font-family: var(--jost);
   font-weight: 400;
@@ -350,6 +380,8 @@ tbody td input[type="number"] { width: 65px; }
   cursor: pointer;
   color: var(--muted);
   transition: background var(--transition), color var(--transition), border-color var(--transition);
+  min-height: 40px;
+  touch-action: manipulation;
 }
 .btn-add:hover { background: var(--surface3); color: var(--accent); border-color: var(--accent); }
 
@@ -374,7 +406,7 @@ tbody td input[type="number"] { width: 65px; }
 .total-pct.over { color: var(--red); }
 .total-pct.exact { color: var(--green); }
 
-/* ── CHART — ancho completo ─────────────────────── */
+/* ── CHART ──────────────────────────────────────── */
 .chart-card {
   background: var(--surface2);
   border: 1px solid var(--border);
@@ -395,7 +427,6 @@ tbody td input[type="number"] { width: 65px; }
   gap: 2rem;
   align-items: center;
 }
-/* FIX 1: Contenedor del canvas con overflow hidden para que el gráfico no se salga */
 .pie-wrap {
   position: relative;
   width: 100%;
@@ -486,28 +517,19 @@ tbody td input[type="number"] { width: 65px; }
   padding: 0.7rem 0.9rem;
 }
 
-/* ── PRINT HEADER & FOOTER ──────────────────────── */
-.print-page-header {
-  display: none;
-}
-.print-page-footer {
-  display: none;
-}
+.print-page-header { display: none; }
+.print-page-footer { display: none; }
 
 @media print {
   @page {
     size: A4 portrait;
-    margin: 14mm 14mm 18mm 14mm;
+    margin: 10mm 10mm 14mm 10mm;
   }
-
-  html { font-size: 11px; }
-
+  html { font-size: 13px; }
   header .header-actions { display: none !important; }
   .btn-add, .btn-remove { display: none !important; }
-
   .print-only { display: block; }
 
-  /* Header de impresión */
   .print-page-header {
     display: flex !important;
     justify-content: space-between;
@@ -516,55 +538,15 @@ tbody td input[type="number"] { width: 65px; }
     border-bottom: 1.5px solid #273326;
     margin-bottom: 12px;
   }
-  .print-header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .print-header-logo {
-    width: 32px;
-    height: 32px;
-  }
-  .print-header-brand {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-  .print-brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #273326;
-    letter-spacing: 0.02em;
-  }
-  .print-brand-sub {
-    font-size: 0.55rem;
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #52574f;
-  }
-  .print-header-right {
-    text-align: right;
-  }
-  .print-header-fullname {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #273326;
-    letter-spacing: 0.03em;
-    display: block;
-  }
-  .print-header-role {
-    font-size: 0.55rem;
-    font-weight: 400;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #52574f;
-  }
+  .print-header-left { display: flex; align-items: center; gap: 10px; }
+  .print-header-logo { width: 32px; height: 32px; }
+  .print-header-brand { display: flex; flex-direction: column; line-height: 1.15; }
+  .print-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 500; color: #273326; letter-spacing: 0.02em; }
+  .print-brand-sub { font-size: 0.62rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #52574f; }
+  .print-header-right { text-align: right; }
+  .print-header-fullname { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: #273326; letter-spacing: 0.03em; display: block; }
+  .print-header-role { font-size: 0.62rem; font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: #52574f; }
 
-  /* FIX 3: Footer estático al final del contenido (no fixed) 
-     para evitar superposición con el texto de la última sección */
   .print-page-footer {
     display: flex !important;
     justify-content: flex-end;
@@ -573,146 +555,128 @@ tbody td input[type="number"] { width: 65px; }
     margin-top: 18px;
     padding-top: 7px;
     border-top: 1px solid #c8c8be;
-    /* Eliminado: position fixed que causaba la superposición */
   }
-  .print-footer-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 0.6rem;
-    color: #52574f;
-    letter-spacing: 0.05em;
-  }
-  .print-footer-icon {
-    font-size: 0.65rem;
-    color: #7a6138;
-  }
+  .print-footer-item { display: flex; align-items: center; gap: 5px; font-size: 0.6rem; color: #52574f; letter-spacing: 0.05em; }
+  .print-footer-icon { font-size: 0.65rem; color: #7a6138; }
 
-  body {
-    background: white !important;
-    color: #1a1a17 !important;
-  }
-
+  body { background: white !important; color: #1a1a17 !important; }
   header { display: none !important; }
-
-  main {
-    max-width: 100% !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
+  main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
   .page-heading { margin-bottom: 8px; padding-bottom: 6px; }
   .page-title { font-size: 1.8rem !important; }
-
-  .section {
-    border: 1px solid #c8c8be !important;
-    border-radius: 2px !important;
-    padding: 0.7rem 0.9rem !important;
-    margin-bottom: 6px !important;
-    break-inside: avoid;
-    page-break-inside: avoid;
-    background: white !important;
-  }
-
-  .section-header {
-    margin-bottom: 0.5rem !important;
-    padding-bottom: 0.4rem !important;
-  }
-
-  .section-title { font-size: 1rem !important; }
-
+  .section { border: 1px solid #c8c8be !important; border-radius: 2px !important; padding: 0.8rem 1rem !important; margin-bottom: 8px !important; break-inside: avoid; page-break-inside: avoid; background: white !important; }
+  .section-header { margin-bottom: 0.6rem !important; padding-bottom: 0.5rem !important; }
+  .section-title { font-size: 1.15rem !important; }
+  .section-num { font-size: 0.95rem !important; }
   textarea { display: none !important; }
-  .print-textarea { display: block !important; }
-
-  input[type="text"], input[type="number"], select {
-    border: none !important;
-    background: transparent !important;
-    padding: 0 !important;
-    height: auto !important;
-    font-size: 0.82rem !important;
-  }
-
-  .metric-card {
-    background: #f8f8f5 !important;
-    border: 1px solid #c8c8be !important;
-    padding: 0.45rem 0.7rem !important;
-  }
-
-  .metric-input {
-    font-size: 1.1rem !important;
-  }
-
-  .grid-2 { gap: 8px !important; }
-  .grid-3 { gap: 8px !important; }
-
-  .portfolio-layout {
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-
-  /* FIX 1: Gráfico en print — canvas contenido dentro del recuadro */
-  .chart-card {
-    background: #f8f8f5 !important;
-    border: 1px solid #c8c8be !important;
-    padding: 0.7rem 0.9rem !important;
-    overflow: hidden !important;
-  }
-  .chart-inner {
-    grid-template-columns: 160px 1fr !important;
-    gap: 1rem !important;
-    align-items: center !important;
-  }
-  .pie-wrap {
-    height: 160px !important;
-    width: 160px !important;
-    overflow: hidden !important;
-    position: relative !important;
-  }
-  .pie-wrap canvas {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 160px !important;
-    height: 160px !important;
-  }
-
-  table { font-size: 0.75rem !important; min-width: unset !important; }
-  tbody td { padding: 2px 5px !important; }
-  thead th { padding: 0 5px 6px !important; }
-
-  .total-bar {
-    margin-top: 6px !important;
-    padding: 5px 10px !important;
-    background: #f8f8f5 !important;
-    border: 1px solid #c8c8be !important;
-  }
-
-  .agrupacion-grid {
-    gap: 6px !important;
-  }
-
-  .grupo-card {
-    background: #f8f8f5 !important;
-    border: 1px solid #c8c8be !important;
-    padding: 0.5rem 0.7rem !important;
-  }
-
-  .legend-list { gap: 4px !important; }
-  .legend-item { font-size: 0.7rem !important; }
+  .print-textarea { display: block !important; font-size: 0.88rem !important; line-height: 1.7 !important; }
+  input[type="text"], input[type="number"], select { border: none !important; background: transparent !important; padding: 0 !important; height: auto !important; font-size: 0.9rem !important; }
+  .field-label { font-size: 0.7rem !important; }
+  .metric-card { background: #f8f8f5 !important; border: 1px solid #c8c8be !important; padding: 0.55rem 0.8rem !important; }
+  .metric-label { font-size: 0.68rem !important; }
+  .metric-input { font-size: 1.25rem !important; }
+  .grid-2 { gap: 10px !important; }
+  .grid-3 { gap: 10px !important; }
+  .portfolio-layout { flex-direction: column !important; gap: 12px !important; }
+  .chart-card { background: #f8f8f5 !important; border: 1px solid #c8c8be !important; padding: 0.8rem 1rem !important; overflow: hidden !important; }
+  .chart-title { font-size: 0.68rem !important; margin-bottom: 0.9rem !important; }
+  .chart-inner { grid-template-columns: 175px 1fr !important; gap: 1.25rem !important; align-items: center !important; }
+  .pie-wrap { height: 175px !important; width: 175px !important; overflow: hidden !important; position: relative !important; }
+  .pie-wrap canvas { position: absolute !important; top: 0 !important; left: 0 !important; width: 175px !important; height: 175px !important; }
+  .legend-list { gap: 6px !important; }
+  .legend-item { font-size: 0.82rem !important; }
+  .legend-pct { font-size: 0.88rem !important; }
+  table { font-size: 0.85rem !important; min-width: unset !important; }
+  tbody td { padding: 4px 6px !important; }
+  thead th { padding: 0 6px 7px !important; font-size: 0.68rem !important; }
+  .total-bar { margin-top: 8px !important; padding: 7px 12px !important; background: #f8f8f5 !important; border: 1px solid #c8c8be !important; font-size: 0.88rem !important; }
+  .total-pct { font-size: 1.3rem !important; }
+  .agrupacion-grid { gap: 8px !important; }
+  .grupo-card { background: #f8f8f5 !important; border: 1px solid #c8c8be !important; padding: 0.6rem 0.8rem !important; }
+  .grupo-title { font-size: 0.68rem !important; }
+  .grupo-row { font-size: 0.85rem !important; padding: 4px 0 !important; }
+  .grupo-pct { font-size: 1.05rem !important; }
 }
 
-/* ── RESPONSIVE ─────────────────────────────────── */
-@media (max-width: 700px) {
-  .chart-inner { grid-template-columns: 1fr; }
+/* ── RESPONSIVE: TABLET (701px – 900px) ─────────── */
+@media (min-width: 701px) and (max-width: 900px) {
+  html { font-size: 14px; }
+  main { padding: 2rem 1.5rem 4rem; }
+  .section { padding: 1.5rem 1.5rem; }
+  .chart-inner { grid-template-columns: 200px 1fr; gap: 1.25rem; }
   .pie-wrap { height: 200px; }
-  .grid-2, .grid-3 { grid-template-columns: 1fr; }
-  .agrupacion-grid { grid-template-columns: 1fr; }
-  .header-inner { padding: 0 1.25rem; }
-  main { padding: 1.5rem 1.25rem 4rem; }
-  .section { padding: 1.25rem 1.25rem; }
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+  .metric-input { font-size: 1.35rem; }
+}
+
+/* ── RESPONSIVE: MOBILE (≤ 700px) ──────────────── */
+@media (max-width: 700px) {
+  html { font-size: 15px; } /* mantener legible */
+
+  /* Header compacto */
+  .header-inner { padding: 0 1rem; gap: 0.75rem; }
   .header-brand { display: none; }
   .header-divider { display: none; }
   .header-tool-name { display: none; }
+  .btn-header span { display: none; } /* solo ícono en móvil */
+  .btn-header { padding: 0.55rem 0.75rem; min-width: 44px; justify-content: center; }
+
+  main { padding: 1.25rem 1rem 4rem; }
+  .section { padding: 1.1rem 1rem; }
+
+  /* Grids → columna única */
+  .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 12px; }
+  .agrupacion-grid { grid-template-columns: 1fr; }
+
+  /* Métricas: 2 columnas en móvil */
+  .grid-3.metrics-grid { grid-template-columns: 1fr 1fr; }
+  .metric-input { font-size: 1.3rem; }
+
+  /* Gráfico apilado en móvil */
+  .chart-inner {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .pie-wrap {
+    height: 220px;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .legend-list { gap: 8px; }
+  .legend-item { font-size: 0.85rem; }
+  .legend-dot { width: 10px; height: 10px; }
+
+  /* Textarea más alta en móvil para leer mejor */
+  textarea { min-height: 110px; font-size: 0.92rem; }
+
+  /* Tabla — hint de scroll */
+  .table-wrap { margin: 0 -1rem; padding: 0 1rem; }
+  table { font-size: 0.85rem; }
+  tbody td input { height: 40px; font-size: 0.85rem; }
+  .cell-select { height: 40px; font-size: 0.8rem; }
+
+  /* Inputs más altos para fácil toque */
+  select, input[type="text"], input[type="number"] {
+    height: 48px;
+    font-size: 0.92rem;
+  }
+
+  /* Page title más grande */
+  .page-title { font-size: clamp(2rem, 7vw, 2.6rem); }
+  .section-title { font-size: 1.25rem; }
+
+  /* Grupo cards: más padding */
+  .grupo-card { padding: 0.9rem 1rem; }
+  .grupo-row { font-size: 0.85rem; padding: 4px 0; }
+  .grupo-pct { font-size: 1rem; }
+}
+
+/* ── RESPONSIVE: MÓVIL PEQUEÑO (≤ 380px) ───────── */
+@media (max-width: 380px) {
+  html { font-size: 14px; }
+  .section { padding: 1rem 0.9rem; }
+  .chart-card { padding: 1rem; }
+  .pie-wrap { height: 190px; max-width: 190px; }
 }
 </style>
 </head>
@@ -736,7 +700,7 @@ tbody td input[type="number"] { width: 65px; }
   </div>
 </div>
 
-<!-- FOOTER DE IMPRESIÓN (solo visible al imprimir) -->
+<!-- FOOTER DE IMPRESIÓN -->
 <div class="print-page-footer">
   <div class="print-footer-item">
     <i class="ti ti-phone print-footer-icon"></i>
@@ -764,8 +728,8 @@ tbody td input[type="number"] { width: 65px; }
     <div class="header-divider"></div>
     <span class="header-tool-name">Armador de Carteras</span>
     <div class="header-actions">
-      <button class="btn-header" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> Imprimir / PDF</button>
-      <button class="btn-header" onclick="limpiarTodo()"><i class="ti ti-refresh" aria-hidden="true"></i> Limpiar</button>
+      <button class="btn-header" onclick="window.print()"><i class="ti ti-printer" aria-hidden="true"></i> <span>Imprimir / PDF</span></button>
+      <button class="btn-header" onclick="limpiarTodo()"><i class="ti ti-refresh" aria-hidden="true"></i> <span>Limpiar</span></button>
     </div>
   </div>
 </header>
@@ -858,11 +822,16 @@ tbody td input[type="number"] { width: 65px; }
       <span class="section-title">Composición de la cartera</span>
     </div>
 
+    <!-- Hint de scroll para móvil -->
+    <div class="scroll-hint" id="scroll-hint" style="display:none; font-size:0.65rem; color:var(--muted2); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:5px;">
+      <i class="ti ti-arrows-horizontal" style="font-size:0.75rem;"></i> Deslizá para ver la tabla completa
+    </div>
+
     <div class="portfolio-layout">
 
       <!-- 3a: Tabla de activos -->
       <div>
-        <div class="table-wrap">
+        <div class="table-wrap" id="table-wrap">
           <table>
             <thead>
               <tr>
@@ -886,7 +855,7 @@ tbody td input[type="number"] { width: 65px; }
         </div>
       </div>
 
-      <!-- 3b: Gráfico de torta — ancho completo -->
+      <!-- 3b: Gráfico de torta -->
       <div class="chart-card">
         <div class="chart-title">Distribución de la cartera</div>
         <div class="chart-inner">
@@ -925,13 +894,28 @@ tbody td input[type="number"] { width: 65px; }
 </main>
 
 <script>
-// Paleta derivada del branding FR — verdes, tierra, azul pizarra
 const COLORS = ['#273326','#7a6138','#1e6b4a','#4a5e6a','#9a7830','#3d5c3a','#6b4c2e','#2c4a52','#5e7845','#8c6040','#395548','#7a5545','#2e4438','#956c3a'];
-
 const SECTORES = ['Acciones','Bonos','Commodities','REITs','Cripto','ETF','FCI','Liquidez','ON','Cedear'];
 const MONEDAS  = ['USD','ARS','EUR','BRL','GBP','CHF','JPY','Otra'];
 
 let rows = [], rowId = 0, pieChart = null;
+
+// Mostrar hint de scroll solo en móvil si la tabla desborda
+function checkScrollHint() {
+  const isMobile = window.innerWidth <= 700;
+  const hint = document.getElementById('scroll-hint');
+  if (!hint) return;
+  hint.style.display = isMobile ? 'flex' : 'none';
+}
+
+// Ocultar hint cuando se llega al final de la tabla
+const tableWrap = document.getElementById('table-wrap');
+if (tableWrap) {
+  tableWrap.addEventListener('scroll', function() {
+    const atEnd = this.scrollLeft + this.clientWidth >= this.scrollWidth - 4;
+    this.classList.toggle('scrolled-end', atEnd);
+  }, { passive: true });
+}
 
 function addRow(ticker='', desc='', sector='', moneda='USD', pct='') {
   rows.push({ id: rowId++, ticker, desc, sector, moneda, pct });
@@ -980,6 +964,7 @@ function renderTable() {
     `;
     tbody.appendChild(tr);
   });
+  checkScrollHint();
   updateCharts();
 }
 
@@ -1002,7 +987,6 @@ function updateCharts() {
 
   if (valid.length > 0) {
     const ctx = document.getElementById('pieChart').getContext('2d');
-    // FIX 2: Usar type 'pie' en lugar de 'doughnut' para torta completa sin hueco
     pieChart = new Chart(ctx, {
       type: 'pie',
       data: {
@@ -1017,14 +1001,11 @@ function updateCharts() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: {
-          padding: 4
-        },
+        layout: { padding: 4 },
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: c => ` ${c.label}: ${c.parsed.toFixed(1)}%` } }
         }
-        // Sin cutout — torta sólida completa
       }
     });
 
@@ -1080,7 +1061,7 @@ function limpiarTodo() {
 
 addRow();
 
-// ── Sincronizar textareas → divs de impresión ────
+// Sincronizar textareas → divs de impresión
 const TEXTAREA_MAP = {
   'macro-text':     'print-macro-text',
   'perfil-text':    'print-perfil-text',
@@ -1101,6 +1082,8 @@ Object.keys(TEXTAREA_MAP).forEach(id => {
 });
 
 window.addEventListener('beforeprint', syncPrintTextareas);
+window.addEventListener('resize', checkScrollHint);
+checkScrollHint();
 </script>
 </body>
 </html>
